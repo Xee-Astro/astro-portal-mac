@@ -1,0 +1,7 @@
+* text=auto
+*.sh text eol=lf
+*.command text eol=lf
+*.js text eol=lf
+*.md text eol=lf
+*.icns binary
+*.png binary

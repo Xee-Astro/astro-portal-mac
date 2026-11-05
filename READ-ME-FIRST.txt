@@ -1,0 +1,152 @@
+Astro Portal 1.1 — for macOS
+
+NEW INSTALLATION
+1. Extract the ZIP and keep its files together.
+2. Run Install.command and follow the Yes/No prompts and Google licenses.
+3. Open Astro Portal.app in your home Applications folder. Its icon is the
+   user-provided Astro Portal design. Drag it to the Dock if wanted.
+4. Choose a location in the main launcher, then click Open DWARFLAB.
+
+ALREADY INSTALLED THE EARLIER TEST?
+Stop Android and quit the old launcher. Extract this ZIP, then run
+Upgrade-Launcher.command. This adds the new interface and display component
+without reinstalling Android or clearing app data. Thereafter use Astro
+Portal.app; the older Astro - DWARFLAB.app is no longer the current launcher.
+
+No Xcode, Homebrew, Android Studio or system Java installation is required.
+The Mac's built-in script compiler creates the native Cocoa launcher app.
+Normal launcher use has a graphical interface and does not open Terminal.
+Terminal is used only for setup, upgrade and optional diagnostic commands.
+
+LOCATION IN THE MAIN INTERFACE
+- Manual: enter latitude, longitude and altitude in metres, then click
+  Save & use manual coordinates. Negative latitude means south; negative
+  longitude means west. Manual coordinates remain saved until changed.
+- Use Mac location: requests permission from macOS Location Services and
+  obtains a fresh location. Mac location can be approximate and may depend
+  on Wi-Fi or internet availability. Accuracy and the last fix are shown.
+- Source selection, coordinates, last fix and fullscreen choice persist in
+  ~/Library/Application Support/Astro-DWARFLAB-Test/settings.json.
+- If Android is running, saved coordinates are sent immediately. Otherwise
+  they are applied when DWARFLAB is opened. Mac mode requests a fresh fix
+  before launch/update and refreshes every minute while this launcher stays
+  open and a session has been started. Stale Mac fixes are not resent.
+- If macOS denies location, enable Astro Portal under System Settings >
+  Privacy & Security > Location Services, or use manual coordinates.
+
+Coordinates are passed to Android's emulator GPS provider; they are not
+written into private DWARFLAB files. Location access is enabled for Android
+and the app's declared location permissions are granted. The vendor app must
+request/read Android location for the data to appear. Telescope use of those
+coordinates still requires physical validation. Phone GPS forwarding is
+not included in this release.
+
+DATE, TIME AND TIMEZONE
+The launcher shows the Mac's date/time and IANA timezone. At launch, update,
+and location sync it copies Mac time and timezone into Android and verifies
+them. Android network time/timezone are disabled to avoid overriding the
+Mac. While a launched session and this launcher remain open, synchronization
+runs every minute, including after Mac timezone or daylight-saving changes.
+If Mac location is unavailable, clock synchronization can still continue.
+When the launcher quits, Android's clock keeps ticking, but no further
+location/timezone updates occur until the launcher runs again.
+
+FULLSCREEN
+Open DWARFLAB fullscreen is enabled by default and saved when changed.
+It opens a dedicated scrcpy window and hides Android system bars for
+DWARFLAB. The Android emulator runs without a second emulator window.
+Option+f toggles fullscreen in the DWARFLAB display. Command+Tab returns to
+the launcher. Uncheck the fullscreen option for a normal resizable window.
+Aspect ratio is preserved, so some Mac screens may have black margins.
+Closing the DWARFLAB display does NOT stop Android. Use Stop Android in the
+launcher to shut down the environment. An old visible emulator window from
+the previous release disappears after Android has been stopped/restarted.
+
+UPDATES
+Update DWARFLAB app downloads the APK from the link on the official vendor
+page, checks archive integrity and native CPU compatibility, closes the app,
+and performs a normal Android update preserving its data. It then reopens
+the app. Finish any capture before updating. Android rejects incompatible
+signatures and downgrades; no reset or forced downgrade is performed.
+The button updates DWARFLAB, not the Astro Portal launcher or telescope
+firmware. No automatic firmware updates are included.
+
+REQUIREMENTS AND STORAGE
+Apple silicon or Intel Mac, macOS 12 or later, hardware virtualization,
+16 GB RAM recommended for the Android emulator, 12 GB free for fresh setup, and internet
+for downloads. Individual Google emulator releases can require newer macOS;
+setup checks hardware acceleration and reports failures. Intel availability
+depends on Google's continued emulator support.
+New Android profiles have a 4 GB app/data partition. Existing profiles keep
+their earlier partition size. Temporary Java, Android tools, display and APK
+downloads are deleted after successful use. 12 GB is a setup free-space
+check, not a measured installed footprint. Images/data need extra storage.
+
+WHAT IS INSTALLED
+Private Temurin Java 21, Google Android tools/emulator, an Android 11 Google
+APIs profile, the original vendor DWARFLAB APK, and official static scrcpy
+5.0.1 for the detected Mac CPU. Google Play is not included.
+Java is checked against Adoptium SHA-256 metadata; Android command-line
+tools 19.0 against Google's published SHA-1; scrcpy against the SHA-256 on
+its official release. SDK Manager handles other Google packages. Android
+validates APK signatures, but no independent DWARFLAB publisher certificate
+is pinned by this prototype.
+
+Everything is separate from other Android installations:
+Data: ~/Library/Application Support/Astro-DWARFLAB-Test
+Launcher: ~/Applications/Astro Portal.app
+Local ADB server port 5047; emulator ports 5580/5581. One instance supported.
+No existing Windows accounts or passwords are bundled.
+Documentation and upstream notices: see THIRD-PARTY.md.
+Source and release links: https://github.com/Xee-Astro/astro-portal-mac
+
+MAC SECURITY AND FIRST OPEN
+This is a locally ad-hoc-signed test app, not Developer ID signed or Apple
+notarized. Setup uses built-in osacompile and codesign and verifies the
+generated bundle. If macOS blocks the download, review the files and use
+Apple's Open Anyway option in Privacy & Security. Do not disable Gatekeeper.
+If Install.command has lost executable permissions, open Terminal, type
+/bin/bash followed by a space, drag Install.command into Terminal, and
+press Return. This also works for Upgrade-Launcher.command.
+
+TEST STATUS AND TELESCOPE CONNECTION
+This package was prepared on Windows. Shell/JavaScript syntax, settings
+logic, bundle packaging and icon format were checked. Native Cocoa/JXA
+execution, permission prompts, scrcpy display, Android provisioning and
+physical telescope operation have NOT been run on a Mac here.
+
+Your friend should verify: launcher/icon, saved preferences after quitting,
+manual GPS in Android/DWARFLAB, Mac permission grant/denial, date/time and
+timezone changes, fullscreen/windowed input, app update and data retention.
+Mac location is forwarded as emulated Android GPS; it is not hardware GPS
+passthrough. Bluetooth pairing, discovery and Wi-Fi provisioning may fail.
+Try configuring the telescope with a phone first and putting the Mac and
+telescope on the same local network; use a manual telescope IP if the app
+supports it. Telescope Wi-Fi can also be tried after downloads are complete.
+Capture, guiding, movement and firmware behavior remain unverified. Avoid
+firmware updates and unattended movement as initial tests.
+
+SUPPORT
+View logs in the launcher opens the logs folder. last-action.log records the
+latest operation; emulator.log and display.log cover boot/display failures.
+Logs can include observing coordinates, paths and device details: review
+before sharing. Diagnostics.command creates a text report on the Desktop.
+If an operation was force-quit and a stale lock prevents a later run, first
+quit Astro Portal and restart the Mac, then remove only the empty
+operation.lock folder inside the support-data folder above.
+
+UNINSTALL
+Stop Android, quit Astro Portal, and move Astro Portal.app to Trash. The
+earlier Astro - DWARFLAB.app can also be removed. To erase this test's apps,
+settings and saved data, move Astro-DWARFLAB-Test from Application Support
+to Trash. Emptying Trash permanently deletes those data. Other Android
+profiles and Android Studio are not removed.
+
+SOURCES
+https://www.dwarflab.com/pages/dwarflab-app-firmware-download
+https://tipscope-app-image.oss-cn-hangzhou.aliyuncs.com/apk/dwarf/DWARFLAB.apk
+https://developer.android.com/studio/install
+https://developer.android.com/studio/run/emulator-console
+https://github.com/Genymobile/scrcpy/blob/master/doc/macos.md
+https://github.com/Genymobile/scrcpy/blob/master/doc/window.md
+https://adoptium.net/

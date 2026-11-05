@@ -1,0 +1,35 @@
+{
+  "version": "1.1",
+  "checks": {
+    "build-launcher.sh": "Bash grammar passed",
+    "common.sh": "Bash grammar passed",
+    "Diagnostics.command": "Bash grammar passed",
+    "install-display.sh": "Bash grammar passed",
+    "Install.command": "Bash grammar passed",
+    "Launch.command": "Bash grammar passed",
+    "Stop.command": "Bash grammar passed",
+    "Upgrade-Launcher.command": "Bash grammar passed",
+    "worker.sh": "Bash grammar passed",
+    "JavaScript": "Syntax passed",
+    "settings_and_location": "Mocked macOS API tests passed: persistence, private file mode, coordinate validation, zero coordinates, denial, stale/fresh fixes",
+    "icon": "ICNS decoded successfully; user-provided artwork retained at owner request",
+    "bundle_configuration": "Version, location purpose strings, compilation/signature commands present; native execution unverified",
+    "local_document_links": "All relative Markdown links resolve"
+  },
+  "execution_host": "Source/package checks; no native Mac execution claimed",
+  "not_verified": [
+    "Native macOS Cocoa/JXA interface and bundle execution",
+    "Android provisioning and emulator boot on a Mac",
+    "Real macOS location permissions",
+    "DWARFLAB reading forwarded GPS coordinates",
+    "Android time/timezone sync on Mac",
+    "Fullscreen display/input",
+    "APK update and data retention on Mac",
+    "Physical telescope discovery, pairing, capture, guiding, movement and firmware"
+  ],
+  "upstream_checks": {
+    "scrcpy": "5.0.1 Mac archive layout and published SHA-256 checked for aarch64 and x86_64",
+    "DWARFLAB": "Vendor APK index inspected 2026-11-02: arm64-v8a, armeabi-v7a, x86, x86_64"
+  },
+  "rights_review": "See THIRD-PARTY.md and RIGHTS.md. User-provided artwork retained at owner request; no legal clearance claimed."
+}

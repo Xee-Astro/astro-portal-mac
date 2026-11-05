@@ -1,0 +1,10 @@
+dist/
+.venv/
+__pycache__/
+.DS_Store
+*.part
+settings.json
+*.log
+*.apk
+*.img
+*.qcow2
