@@ -1,0 +1,26 @@
+name: Validate source and Mac bundle
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python package.py
+      - name: Compile and verify the native launcher bundle
+        run: ASTRO_NO_REVEAL=1 /bin/bash build-launcher.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Astro-Portal-1.1-validated-package
+          path: dist/
