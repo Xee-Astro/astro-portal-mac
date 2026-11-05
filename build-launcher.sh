@@ -32,5 +32,7 @@ set_plist NSLocationWhenInUseUsageDescription string 'Astro Portal shares observ
 mkdir -p "$HOME/Applications"
 # Overlay only the known application; the Android profile and settings are separate.
 /usr/bin/ditto "$bundle" "$APP"
+mkdir -p "$HOME/Desktop"
+ln -sfn "$APP" "$HOME/Desktop/Astro Portal.app"
 echo "Launcher installed: $APP"
 if [ "${ASTRO_NO_REVEAL:-0}" != 1 ]; then open -R "$APP"; fi
