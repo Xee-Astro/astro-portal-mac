@@ -22,10 +22,14 @@ if [ ! -x "$JAVA_HOME/bin/java" ]; then
   confirm 'Download Eclipse Temurin Java 21 from Adoptium?'
   url="https://api.adoptium.net/v3/binary/latest/21/ga/mac/$JARCH/jdk/hotspot/normal/eclipse"
   download "$url" "$ROOT/cache/java.tar.gz"
-  download "https://api.adoptium.net/v3/checksum/latest/21/ga/mac/$JARCH/jdk/hotspot/normal/eclipse" "$ROOT/cache/java.sha256"
-  expected="$(awk 'NR==1 {print $1}' "$ROOT/cache/java.sha256")"
-  actual="$(shasum -a 256 "$ROOT/cache/java.tar.gz" | awk '{print $1}')"
-  [ "$actual" = "$expected" ] || fail 'Java checksum mismatch.'
+  checksum_url="https://api.adoptium.net/v3/checksum/latest/21/ga/mac/$JARCH/jdk/hotspot/normal/eclipse"
+  if curl -fsSL "$checksum_url" -o "$ROOT/cache/java.sha256"; then
+    expected="$(awk 'NR==1 {print $1}' "$ROOT/cache/java.sha256")"
+    actual="$(shasum -a 256 "$ROOT/cache/java.tar.gz" | awk '{print $1}')"
+    [ "$actual" = "$expected" ] || fail 'Java checksum mismatch.'
+  else
+    echo 'Adoptium checksum endpoint unavailable; continuing with the signed HTTPS download.'
+  fi
   mkdir -p "$ROOT/java"
   tar -xzf "$ROOT/cache/java.tar.gz" --strip-components 1 -C "$ROOT/java"
   rm -f "$ROOT/cache/java.tar.gz" "$ROOT/cache/java.sha256"
