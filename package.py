@@ -77,8 +77,14 @@ def archive(name, files):
     with zipfile.ZipFile(target) as z:
         assert z.testzip() is None
         for info in z.infolist():
-            if info.filename.endswith('.command'):
+            if info.filename.endswith(('.command', '.sh')):
                 assert (info.external_attr >> 16) & 0o111
+                data = z.read(info)
+                assert b'\r' not in data, info.filename
+                assert b'`n' not in data and b'`r' not in data, info.filename
+                assert not parser.parse(data).root_node.has_error, info.filename
+            if info.filename.endswith('/build-launcher.sh'):
+                assert b'$HOME/Desktop/Astro Portal.app' in z.read(info)
     return target
 
 source_files = [p for p in ROOT.rglob('*') if p.is_file()
@@ -91,3 +97,4 @@ checksums = ''.join(hashlib.sha256(p.read_bytes()).hexdigest() + '  ' + p.name +
 (DIST / 'SHA256SUMS.txt').write_text(checksums)
 print(f'Version {VERSION}: checks and ZIP integrity/executable metadata passed')
 print(checksums)
+
